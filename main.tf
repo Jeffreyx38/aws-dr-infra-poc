@@ -17,6 +17,9 @@ resource "aws_s3_bucket" "sanity" {
   bucket = "dr-poc-sanity-${local.account_id}"
 }
 
+### NETWORK ###
+
+
 module "network_east" {
   source = "./modules/network_vpc"
 
@@ -33,6 +36,18 @@ module "network_west" {
   vpc_cidr = "10.20.0.0/16"
 }
 
+### KMS ###
 
+module "kms_mrk_shared" {
+  source = "./modules/kms_mrk"
+
+  providers = {
+    aws       = aws
+    aws.west2 = aws.west2
+  }
+
+  description = "Shared MRK for DR POC"
+  alias_name  = "alias/jzbx/poc/shared-mrk"
+}
 
 
