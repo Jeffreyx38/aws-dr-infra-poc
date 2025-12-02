@@ -4,5 +4,6 @@ variable "description" {
 
 variable "alias_name" {
   type = string
-#   default = "alias/jzbx/poc/shared-mrk"
+  #   default = "alias/jzbx/poc/shared-mrk"
 }
+
