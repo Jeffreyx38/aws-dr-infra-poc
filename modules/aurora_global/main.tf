@@ -26,6 +26,8 @@ resource "aws_rds_cluster" "primary" {
   db_subnet_group_name   = var.db_subnet_group_name_primary
   vpc_security_group_ids = var.vpc_security_group_ids_primary
 
+  enable_http_endpoint = true
+
   backup_retention_period = 1
   preferred_backup_window = "03:00-04:00"
 
@@ -35,6 +37,10 @@ resource "aws_rds_cluster" "primary" {
     min_capacity = 0.5 # ACUs – matches what you picked in the console
     max_capacity = 1
   }
+
+  # New for easy destroy in POC
+  skip_final_snapshot = true
+  deletion_protection = false
 }
 
 resource "aws_rds_cluster_instance" "primary_instances" {
@@ -61,6 +67,8 @@ resource "aws_rds_cluster" "dr" {
   db_subnet_group_name   = var.db_subnet_group_name_dr
   vpc_security_group_ids = var.vpc_security_group_ids_dr
 
+  enable_http_endpoint = true
+
   engine_mode = "provisioned"
   serverlessv2_scaling_configuration {
     min_capacity = 0.5
@@ -68,6 +76,10 @@ resource "aws_rds_cluster" "dr" {
   }
 
   backup_retention_period = 1
+
+  # New for easy destroy in POC
+  skip_final_snapshot = true
+  deletion_protection = false
 }
 
 resource "aws_rds_cluster_instance" "dr_instances" {
