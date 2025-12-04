@@ -56,10 +56,11 @@ resource "aws_rds_cluster_instance" "primary_instances" {
 # DR cluster (us-west-2)
 ##################################
 resource "aws_rds_cluster" "dr" {
-  provider                  = aws.west2
-  engine                    = "aurora-mysql"
-  engine_version            = aws_rds_cluster.primary.engine_version
-  global_cluster_identifier = aws_rds_global_cluster.this.id
+  provider                      = aws.west2
+  engine                        = "aurora-mysql"
+  engine_version                = aws_rds_cluster.primary.engine_version
+  global_cluster_identifier     = aws_rds_global_cluster.this.id
+  replication_source_identifier = aws_rds_cluster.primary.arn
 
   kms_key_id        = var.kms_key_arn_dr
   storage_encrypted = true
